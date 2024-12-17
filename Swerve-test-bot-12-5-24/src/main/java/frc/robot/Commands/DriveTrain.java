@@ -5,8 +5,8 @@
 package frc.robot.Commands;
 
 import com.kauailabs.navx.frc.AHRS;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 // import com.pathplanner.lib.config.PIDConstants;
@@ -34,13 +34,14 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constanst;
+import frc.robot.MetricsProvider;
 // import frc.robot.MetricsProvider;
 import frc.robot.Subsystems.SwerveModule;
 
 
 
 /** Represents a swerve drive style drivetrain. */
-// @Component
+@Component
 public class DriveTrain extends SubsystemBase {
 
   int ii = 0;
@@ -90,8 +91,8 @@ private double rot_cur;
 
   private DifferentialDrivetrainSim simDrive;
 
-  // @Autowired
-  // private MetricsProvider metricsProvider;
+  @Autowired
+  private MetricsProvider metricsProvider;
 
   public DriveTrain() {
     // SmartDashboard.putNumber("P rotate", Protate);

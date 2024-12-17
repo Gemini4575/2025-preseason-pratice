@@ -4,7 +4,9 @@
 
 package frc.robot;
 
-// import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -28,8 +30,8 @@ import frc.robot.Commands.TelopSwerve;
 import frc.robot.Constanst.JoystickConstants;
 import frc.robot.Subsystems.*;
 
-// @Component
-public class RobotContainer {
+@Component
+public class RobotContainer implements InitializingBean{
 
   /* Test mode choosers */
     /* Initail */
@@ -37,7 +39,6 @@ public class RobotContainer {
       private final String Xbox = "Use Xbox controller";
       private final String Input = "Use Inputs";
       private String TestModeSelected;
-    
 
   /* Controllers */
     private final XboxController driver = new XboxController(JoystickConstants.DRIVER_USB);
@@ -47,15 +48,19 @@ public class RobotContainer {
     private final JoystickButton zeroGyro = new JoystickButton(driver, JoystickConstants.BACK_BUTTON);
 
   /* Subsystems */
-    private final LimelightSubsystem limelight = new LimelightSubsystem();
     private final FlagsSubsystem flag = new FlagsSubsystem();
-    private final DriveTrain s_swerve = new DriveTrain();
     private final TestMode test = new TestMode();
 
-  /* Pathplanner stuff */
-    private final SendableChooser<Command> autoChoosers;
+    @Autowired
+    private LimelightSubsystem limelight;
+    @Autowired
+    private DriveTrain s_swerve;
 
-  public RobotContainer() {
+  /* Pathplanner stuff */
+    private SendableChooser<Command> autoChoosers;
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
     
     /* Starting the Test Mode selectors*/
       test.start();
