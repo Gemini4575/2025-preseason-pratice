@@ -203,8 +203,12 @@ SmartDashboard.putNumber("encoder raw " + moduleNumber, retVal);
  
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
-
-    m_driveMotor.set((driveOutput + driveFeedforward) / 1.75);//3.5
+    if(RobotState.isAutonomous()) {
+      m_driveMotor.set((driveOutput + driveFeedforward));
+    } else if (RobotState.isTeleop()) {
+      m_driveMotor.set((driveOutput + driveFeedforward) / 3.5);
+    }
+    
     m_turningMotor.setVoltage(turnOutput + turnFeedforward);
     SmartDashboard.putNumber("Turning stuff", Math.max(turnOutput, turnFeedforward));
     if(RobotState.isTest()) {

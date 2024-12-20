@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constanst;
@@ -53,7 +54,9 @@ public class DriveTrain extends SubsystemBase {
   double Protate = 15.0;
   double Irotate = 2.0;
   double Drotate = 0.0;
-       
+  
+  SendableChooser<Pose2d> ahhhhhh;
+
 private final Translation2d m_frontLeftLocation = Constanst.SwerveConstants.m_frontLeftLocation;
 private final Translation2d m_frontRightLocation = Constanst.SwerveConstants.m_frontRightLocation;
 private final Translation2d m_backLeftLocation = Constanst.SwerveConstants.m_backLeftLocation;
@@ -124,8 +127,8 @@ private double rot_cur;
       this::getSpeed, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
       this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-              new PIDConstants(16.7, 1.0, 0.0), // Translation PID constants
-              new PIDConstants(1.0, 2.0, 0.0), // Rotation PID constants
+              new PIDConstants(/*16.7*/0, 1.0, 0.0), // Translation PID constants
+              new PIDConstants(0.1, 0.0, 0.0), // Rotation PID constants
               4.5, // Max module speed, in m/s
               0.4, // Drive base radius in meters. Distance from robot center to furthest module.
               new ReplanningConfig() // Default path replanning config. See the API for the options here
@@ -233,7 +236,8 @@ private double rot_cur;
   }
 
   @Override
-  public void simulationPeriodic() {
+  public void periodic() {
+    
       /*super.simulationPeriodic();
 
       //FIXME this is probably not the right speed calculation.. need to figure out where to get the speed
