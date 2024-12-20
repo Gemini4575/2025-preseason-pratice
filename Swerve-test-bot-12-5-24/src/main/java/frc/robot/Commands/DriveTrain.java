@@ -101,7 +101,7 @@ private double rot_cur;
     // SmartDashboard.putNumber("P translate", Ptranslate);
     // SmartDashboard.putNumber("D translate", Dtranslate);
     // SmartDashboard.putNumber("I translate", Itranslate);
-
+/*
     simDrive = new DifferentialDrivetrainSim(
                 DCMotor.getNEO(2), // 2 NEO motors on each side of the drivetrain.
                 7.29, // 7.29:1 gearing reduction.
@@ -115,64 +115,61 @@ private double rot_cur;
                 // l and r velocity: 0.1 m/s
                 // l and r position: 0.005 m
                 VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
-
+*/
     m_gyro.reset();
     
-     AutoBuilder.configureHolonomic(
-    this::getPose, // Robot pose supplier
-    this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-    this::getSpeed, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-    new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(0, 0, 0.0), // Translation PID constants
-            new PIDConstants(16.7, 2.0, 0.0), // Rotation PID constants
-            4.5, // Max module speed, in m/s
-            0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-    ),//540.0
-    //720.0
-    () -> {
-      // Boolean supplier that controls when the path will be mirrored for the red alliance
-      // This will flip the path being followed to the red side of the field.
-      // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-      var alliance = DriverStation.getAlliance();
-      if (alliance.isPresent()) {
-        return alliance.get() == DriverStation.Alliance.Red;
-      }
-      return false;
-    },
-    this // Reference to this subsystem to set requirements
-);
-SmartDashboard.putBoolean("Configured", AutoBuilder.isConfigured());
+    AutoBuilder.configureHolonomic(
+      this::getPose, // Robot pose supplier
+      this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+      this::getSpeed, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+      this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+      new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+              new PIDConstants(16.7, 1.0, 0.0), // Translation PID constants
+              new PIDConstants(1.0, 2.0, 0.0), // Rotation PID constants
+              4.5, // Max module speed, in m/s
+              0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+              new ReplanningConfig() // Default path replanning config. See the API for the options here
+      ),//540.0
+      //720.0
+      () -> {
+        // Boolean supplier that controls when the path will be mirrored for the red alliance
+        // This will flip the path being followed to the red side of the field.
+        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+          return alliance.get() == DriverStation.Alliance.Red;
+        }
+        return false;
+      },
+      this // Reference to this subsystem to set requirements
+    );
   }
-
-  public void ResetDrives () {
-
-    /* 
-    m_frontLeft.resetEncoder();
-    m_frontRight.resetEncoder();
-    m_backLeft.resetEncoder();
-    m_backRight.resetEncoder();
-    */
-    m_gyro.reset();
-
-    SmartDashboard.putString("Gyro has been reset", java.time.LocalTime.now().toString());
-  }
-  /**
-   * Method to drive the robot using joystick info.
-   *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   * @param rot Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-   */
   
-  public void driveRobotRelative(ChassisSpeeds chassisSpeedsIn) {
-    ii++;
-    SmartDashboard.putNumber("dribe", ii);
-    drive(chassisSpeedsIn.vxMetersPerSecond, chassisSpeedsIn.vyMetersPerSecond, chassisSpeedsIn.omegaRadiansPerSecond, false);
-  }
+    public void ResetDrives () {
+  
+      /* 
+      m_frontLeft.resetEncoder();
+      m_frontRight.resetEncoder();
+      m_backLeft.resetEncoder();
+      m_backRight.resetEncoder();
+      */
+      m_gyro.reset();
+  
+      SmartDashboard.putString("Gyro has been reset", java.time.LocalTime.now().toString());
+    }
+    /**
+     * Method to drive the robot using joystick info.
+     *
+     * @param xSpeed Speed of the robot in the x direction (forward).
+     * @param ySpeed Speed of the robot in the y direction (sideways).
+     * @param rot Angular rate of the robot.
+     * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+     */
+    
+    public void driveRobotRelative(ChassisSpeeds chassisSpeedsIn) {
+      drive(chassisSpeedsIn.vxMetersPerSecond, chassisSpeedsIn.vyMetersPerSecond, chassisSpeedsIn.omegaRadiansPerSecond, false);
+    }
+
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates =
         m_kinematics.toSwerveModuleStates(

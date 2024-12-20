@@ -1,10 +1,8 @@
 package frc.robot.Commands;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constanst;
@@ -15,13 +13,7 @@ public class TelopSwerve extends Command {
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
-    private BooleanSupplier slowMode;
-    private BooleanSupplier middleMode;
     private boolean isFinished;
-    private final double slowSpeed = 0.2;
-    private final double slowRotation = 0.2;
-    private final double middleSpeed = 0.65;
-    private final double middleRotation = 0.65;
     double i = 0.0;
     /**
      * This is the command that dirves your swerve robot. When setting this up in robot container
@@ -42,17 +34,12 @@ public class TelopSwerve extends Command {
         this.translationSup = translationSup;
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
-        this.slowMode = slowMode;
-        // this.targetingUtil = targetingUtil; 
-        this.middleMode = middleMode;
     }
 
     @Override
     public void execute() {
         isFinished = false;
         String mode = "normal";
-        double speedMulti;
-        double rotMulti;
         // double teleOpMaxSpeed = Constants.Swerve.maxSpeed;
         // double teleOpMaxAngularVelocity = Constants.Swerve.maxAngularVelocity;
 

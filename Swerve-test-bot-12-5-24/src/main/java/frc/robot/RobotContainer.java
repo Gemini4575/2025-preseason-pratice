@@ -63,7 +63,9 @@ public class RobotContainer {
       TestMode.addOption("Use Inputs", Input);
       TestModeSelected = TestMode.getSelected();
       SmartDashboard.putData(TestMode);
+
     autoChoosers = AutoBuilder.buildAutoChooser();
+    
     double jiggle_count = SmartDashboard.getNumber("Advancer Jiggle Number Auto", 5);
       s_swerve.setDefaultCommand(
         new TelopSwerve(

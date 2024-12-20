@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.352669961516775,
-      "y": 5.540474435955374
+      "x": 1.3949707899415804,
+      "y": 5.55593454044051
     },
     "rotation": 0
   },
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Tuning auto"
+            "pathName": "Tuning Auto"
           }
         }
       ]
