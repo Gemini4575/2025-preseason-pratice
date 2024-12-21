@@ -40,7 +40,7 @@ public class RobotContainer {
     
 
   /* Controllers */
-    private final XboxController driver = new XboxController(JoystickConstants.DRIVER_USB);
+    private final Joystick driver = new Joystick(JoystickConstants.DRIVER_USB);
     private final Joystick operator = new Joystick(JoystickConstants.OPERATOR_USB);
 
   /* Driver Buttons */
@@ -66,13 +66,12 @@ public class RobotContainer {
 
     autoChoosers = AutoBuilder.buildAutoChooser();
     
-    double jiggle_count = SmartDashboard.getNumber("Advancer Jiggle Number Auto", 5);
       s_swerve.setDefaultCommand(
         new TelopSwerve(
           s_swerve,
-          () -> -driver.getLeftY(),
-          () -> -driver.getLeftX(), 
-          () -> -driver.getRightX()
+          () -> driver.getRawAxis(Constanst.JoystickConstants.LEFT_Y_AXIS),
+          () -> -driver.getRawAxis(Constanst.JoystickConstants.LEFT_X_AXIS), 
+          () -> -driver.getTwist()
           )
       );
     
@@ -106,9 +105,9 @@ public class RobotContainer {
           s_swerve.setDefaultCommand(
             new TelopSwerve(
               s_swerve,
-              () -> -driver.getLeftY(),
-              () -> -driver.getLeftX(), 
-              () -> -driver.getRightX()
+              () -> driver.getRawAxis(Constanst.JoystickConstants.LEFT_Y_AXIS),
+              () -> -driver.getRawAxis(Constanst.JoystickConstants.LEFT_X_AXIS), 
+              () -> -driver.getTwist()
               )
           );
 

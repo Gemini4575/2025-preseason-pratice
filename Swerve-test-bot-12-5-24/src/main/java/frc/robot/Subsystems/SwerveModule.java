@@ -37,6 +37,9 @@ public class SwerveModule extends Command {
   private final RelativeEncoder m_driveEncoder;
   private final AnalogInput m_turningEncoder;
 
+  private double ahhhhhhhhhhh = 0.0;
+  private int iii = 1;
+
   private double encoderOffset = 0;
   
   private int moduleNumber = 0;
@@ -60,7 +63,7 @@ public class SwerveModule extends Command {
               Constanst.SwerveConstants.kModuleMaxAngularVelocity, Constanst.SwerveConstants.kModuleMaxAngularAcceleration));
 
   // Gains are for example purposes only - must be determined for your own robot!
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 1.5); // this was 3, changed to 1.5 because it was driving too far
   private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
 
   /**
@@ -71,6 +74,7 @@ public class SwerveModule extends Command {
    * @param turningEncoderChannelA DIO input for the turning encoder channel A
    */
   public SwerveModule(SwerveModuleConstants moduleConstants) {
+    SmartDashboard.putNumber("tueing", ahhhhhhhhhhh);
     m_driveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
     m_driveMotor.setInverted (true);
     // driveMotorSim = new SparkSim(m_driveMotor, DCMotor.getNEO(1));
@@ -201,18 +205,29 @@ SmartDashboard.putNumber("encoder raw " + moduleNumber, retVal);
         m_turningPIDController.calculate(encoderValue(), state.angle.getRadians());
 // SmartDashboard.putNumber("pid " + moduleNumber, turnOutput);
  
+    SmartDashboard.putNumber("Setpoint velocity", m_turningPIDController.getSetpoint().velocity);
     final double turnFeedforward =
         m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+    SmartDashboard.putNumber("turnFeedforward",turnFeedforward);
     if(RobotState.isAutonomous()) {
-      m_driveMotor.set((driveOutput + driveFeedforward));
+      m_driveMotor.setVoltage((driveFeedforward));
+      System.out.println("Output: " + driveOutput + " Feedforward: " + driveFeedforward);
+      m_turningMotor.setVoltage(turnOutput + turnFeedforward);
     } else if (RobotState.isTeleop()) {
-      m_driveMotor.set((driveOutput + driveFeedforward) / 3.5);
+      m_driveMotor.set((driveOutput + driveFeedforward) / 2.1);
+      m_turningMotor.setVoltage(turnOutput + turnFeedforward);
     }
     
-    m_turningMotor.setVoltage(turnOutput + turnFeedforward);
+    if (ahhhhhhhhhhh < SmartDashboard.getNumber("tueing" , 0) || iii == 3000) {
+      ahhhhhhhhhhh = (turnOutput + turnFeedforward);
+      SmartDashboard.putNumber("tueing", (turnOutput + turnFeedforward));
+      iii ++;
+    }
+    SmartDashboard.putNumber("turnOutput",turnOutput);
+     SmartDashboard.putNumber("Drive", (driveOutput + driveFeedforward) /2.1);
     SmartDashboard.putNumber("Turning stuff", Math.max(turnOutput, turnFeedforward));
     if(RobotState.isTest()) {
-      SmartDashboard.putNumber("Dirve", (driveOutput + driveFeedforward) /3.5);
+     
       SmartDashboard.putNumber("Turning stuff", turnOutput + turnFeedforward);
       SmartDashboard.putNumber("target " + moduleNumber, state.angle.getRadians());
     }

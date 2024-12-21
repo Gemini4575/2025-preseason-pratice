@@ -45,7 +45,9 @@ private final Translation2d m_backRightLocation = new Translation2d(-0.45085, -0
             public static final double kModuleMaxAngularAcceleration = 18.85;//4 * Math.PI; // radians per second squared
             // FWF - stole this from 6328's code, each gear reduction written out. Final is 6.75. 39.37 converts inches to meters so we can be european fancy
             //private final double driveAfterEncoderReduction = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
-            public static final double driveAfterEncoderReduction = (4.0 / 39.37) * Math.PI * (1/6.75);
+            //public static final double driveAfterEncoderReduction = (4.0 / 39.37) * Math.PI * (1/6.75);
+//            public static final double driveAfterEncoderReduction = 0.0788114854;   // FWF this is the above calc * 1.6667 to see if the auto distance changes
+
             public static final double turnAfterEncoderReduction = -1 * (7/150);
         
         public static final class Mod0 { 
