@@ -6,8 +6,7 @@ package frc.robot;
 
 // import org.springframework.stereotype.Component;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoSource;
@@ -53,10 +52,10 @@ public class RobotContainer {
     private final FlagsSubsystem flag = new FlagsSubsystem();
     private final DriveTrain s_swerve = new DriveTrain();
     private final TestMode test = new TestMode();
-    private final CameraSubsystem cam = new CameraSubsystem();
+    // private final CameraSubsystem cam = new CameraSubsystem();
 
   /* Pathplanner stuff */
-    private final SendableChooser<Command> autoChoosers;
+    // private final SendableChooser<Command> autoChoosers;
 
   public RobotContainer() {
 
@@ -67,7 +66,7 @@ public class RobotContainer {
       TestModeSelected = TestMode.getSelected();
       SmartDashboard.putData(TestMode);
 
-    autoChoosers = AutoBuilder.buildAutoChooser();
+    // autoChoosers = AutoBuilder.buildAutoChooser();
     
       s_swerve.setDefaultCommand(
         new TelopSwerve(
@@ -82,11 +81,11 @@ public class RobotContainer {
     configureBindings();
 
       /* Flags */
-        NamedCommands.registerCommand("Green Flag", new RunGreenFlagCommand(flag));
+        NamedCo.registerCommand("Green Flag", new RunGreenFlagCommand(flag));
         NamedCommands.registerCommand("Red Flag", new RunRedFlagCommand(flag));
         NamedCommands.registerCommand("Yellow Flag", new RunYellowFlagCommand(flag));
 
-        SmartDashboard.putData("Auto Chooser", autoChoosers);
+        // SmartDashboard.putData("Auto Chooser", autoChoosers);
   }
   
   public void testPeriodic() {
@@ -130,7 +129,7 @@ public class RobotContainer {
         // new JoystickButton(operator, Constanst.JoystickConstants.YELLOW_BUTTON).onTrue(new RunYellowFlagCommand(flag));
   }
 
-  public Command getAutonomousCommand() {
-    return autoChoosers.getSelected();
-  }
+//   public Command getAutonomousCommand() {
+//     return autoChoosers.getSelected();
+//   }
 }
